@@ -128,7 +128,8 @@ spec:
           image: {{ include "linkstack.image" . }}
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh"]
-          args: ["-c", "cp -r /htdocs/. /data && chown -R {{ default "100" .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /data"]
+          #args: ["-c", "cp -r /htdocs/ /data/ && chown -R {{ default "100" .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /data"]
+          args: ["-c", "apk add --no-interactive rsync && rsync --chmod=777 --ignore-existing -r /htdocs/ /data && chown -R {{ default "100" .Values.securityContext.runAsUser }}:{{ .Values.securityContext.runAsGroup }} /data"]
           volumeMounts:
             - name: {{ include "linkstack.pv.name" . }}
               mountPath: "/data"
